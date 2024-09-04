@@ -1,0 +1,45 @@
+first we need to build docker images for frontend backend
+clone repo
+kumar@LAPTOP-R0LFCE9D:~/mernstackcompose$ git clone https://github.com/spkumar17/MERN-docker-compose.git
+
+buildimages
+kumar@LAPTOP-R0LFCE9D:~/mernstackcompose/MERN-docker-compose/mern/frontend$ docker build -t frontend .
+kumar@LAPTOP-R0LFCE9D:~/mernstackcompose/MERN-docker-compose/mern/backend$ docker build -t backend .
+
+command to run the frontend container
+command to run the backend container 
+docker run -d -p 5050:5050 --name backend --network mern_network -e URI=mongodb://root:root@mongodb:27017/mydatabase backend:latest
+
+command to rum mongodb container
+docker run -d -p 27017:27017 --network mern_network --name mongodb -v mongo-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root --restart always mongo:6.0 mongod --auth
+
+
+as we need to enable communication between front back and db we need to create a network type bridge
+docker network create --driver bridge mern_network
+
+then we need to create a volume for persistence 
+ docker volume create mongo-data
+
+then need to run mongodb container by giving env variables and by attaching  volume and network
+environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root    
+      restart: always    # policy ensures that Docker will automatically restart your MongoDB container if it stops unexpectedly
+      command: mongod --auth  #it will require a username and password to connect.
+
+then we need to run DB container first as backend depends on DB and then we need to run backend and frontend.
+note 
+Ensure that all necessary environment variables are set in your Docker Compose configurations. 
+Missing or incorrect environment variables, such as the backend URL in a frontend application, 
+can prevent proper connectivity between services and lead to errors or failed functionality. 
+Always define required environment variables to ensure your services communicate correctly and function as expected.
+
+
+
+
+
+
+
+
+
+
