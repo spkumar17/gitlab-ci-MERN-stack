@@ -8,7 +8,7 @@ services:
       - mern_network
     environment:
       REACT_APP_API_URL: http://backend:5050 
-      
+
   backend:
     build: ./mern/backend
     ports:
@@ -16,7 +16,7 @@ services:
     networks:
       - mern_network
     environment:
-      MONGO_URI: mongodb://mongo:27017/mydatabase  
+      MONGO_URI: mongodb://mongodb:27017/mydatabase  
     depends_on:
       - mongodb    
 

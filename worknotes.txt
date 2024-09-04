@@ -7,19 +7,193 @@ kumar@LAPTOP-R0LFCE9D:~/mernstackcompose/MERN-docker-compose/mern/frontend$ dock
 kumar@LAPTOP-R0LFCE9D:~/mernstackcompose/MERN-docker-compose/mern/backend$ docker build -t backend .
 
 command to run the frontend container
+docker run -d --name frontend --network mern_network -p 5173:5173 -e REACT_APP_API_URL=http://backend:5050 frontend:latest
+
 command to run the backend container 
-docker run -d -p 5050:5050 --name backend --network mern_network -e URI=mongodb://root:root@mongodb:27017/mydatabase backend:latest
+docker run -d -p 5050:5050 --name backend --network mern_network -e URI=mongodb://mongodb:27017/mydatabase backend:latest
 
 command to rum mongodb container
-docker run -d -p 27017:27017 --network mern_network --name mongodb -v mongo-data:/data/db -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root --restart always mongo:6.0 mongod --auth
+ docker run -d -p 27017:27017 --network mern_network --name mongodb -v mongo-data:/data/db mongo:latest
 
+ ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+docker exec -it mongodb mongosh
+ docker exec -it mongodb mongosh
+Current Mongosh Log ID: 66d7e8a07302dd3b255e739b
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.0
+Using MongoDB:          7.0.14
+Using Mongosh:          2.3.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2024-09-04T04:06:23.299+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-09-04T04:06:34.495+00:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+   2024-09-04T04:06:34.501+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never' in this binary version
+   2024-09-04T04:06:34.501+00:00: vm.max_map_count is too low
+------
+
+test> show dbs;
+admin       40.00 KiB
+config     108.00 KiB
+employees   72.00 KiB
+local       40.00 KiB
+test> use employees
+switched to db employees
+employees> show collections
+records
+employees> db.records.find().pretty()
+[
+  {
+    _id: ObjectId('66d7df77a5a0b07f6308f306'),
+    name: 'Prasanna Kumar ',
+    position: 'systems engineer ',
+    level: 'Junior'
+  },
+  {
+    _id: ObjectId('66d7e3e5a5a0b07f6308f307'),
+    name: 'Prasanth murthy',
+    position: 'systems engineer ',
+    level: 'Senior'
+  },
+  {
+    _id: ObjectId('66d7e8dda5a0b07f6308f309'),
+    name: 'john',
+    position: 'principal consultant ',
+    level: 'Senior'
+  }
+]
+
+=====================================================================================================
 
 as we need to enable communication between front back and db we need to create a network type bridge
 docker network create --driver bridge mern_network
 
 then we need to create a volume for persistence 
- docker volume create mongo-data
+docker volume create mongo-data
 
+ docker rm -f $(docker ps -aq) -----> remove all the running containers 
+
+using docker compose 
+
+kumar@LAPTOP-R0LFCE9D:~/Docker-Zero-to-Hero/examples/MERN-dockercompose$ docker-compose up -d
+[+] Running 9/9
+ ✔ mongodb Pulled                                                                                                                         64.3s
+   ✔ 857cc8cb19c0 Pull complete                                                                                                            3.0s
+   ✔ a54f12bd5819 Pull complete                                                                                                            1.0s
+   ✔ f95b02a6236d Pull complete                                                                                                            1.2s
+   ✔ 0d20d29fe9ca Pull complete                                                                                                            2.6s
+   ✔ 2382733f40de Pull complete                                                                                                            2.9s
+   ✔ c1458145b657 Pull complete                                                                                                            3.5s
+   ✔ fee77be41765 Pull complete                                                                                                           38.9s
+   ✔ da4a4cbb623f Pull complete                                                                                                            3.9s
+[+] Building 5.5s (18/18) FINISHED                                                                                               docker:default
+ => [backend internal] load build definition from Dockerfile                                                                               0.2s
+ => => transferring dockerfile: 152B                                                                                                       0.0s
+ => [frontend internal] load build definition from Dockerfile                                                                              0.1s
+ => => transferring dockerfile: 664B                                                                                                       0.1s
+ => [backend internal] load metadata for docker.io/library/node:18.9.1                                                                     4.2s
+ => [backend auth] library/node:pull token for registry-1.docker.io                                                                        0.0s
+ => [frontend internal] load .dockerignore                                                                                                 0.0s
+ => => transferring context: 2B                                                                                                            0.0s
+ => [backend internal] load .dockerignore                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                            0.0s
+ => [frontend 1/5] FROM docker.io/library/node:18.9.1@sha256:d6ed353d022f6313aa7c3f3df69f3a216f1c9f8c3374502eb5e6c45088ce68e8              0.0s
+ => [backend internal] load build context                                                                                                  0.1s
+ => => transferring context: 250B                                                                                                          0.0s
+ => [frontend internal] load build context                                                                                                 0.1s
+ => => transferring context: 1.17kB                                                                                                        0.1s
+ => CACHED [frontend 2/5] WORKDIR /app                                                                                                     0.0s
+ => CACHED [backend 3/5] COPY package.json .                                                                                               0.0s
+ => CACHED [backend 4/5] RUN npm install                                                                                                   0.0s
+ => CACHED [backend 5/5] COPY . .                                                                                                          0.0s
+ => [backend] exporting to image                                                                                                           0.2s
+ => => exporting layers                                                                                                                    0.0s
+ => => writing image sha256:7448c58d888456fe0c660efc22f0901f15641192c4cd92ca98ebbbba06022b62                                               0.0s
+ => => naming to docker.io/library/mern-dockercompose-backend                                                                              0.1s
+ => CACHED [frontend 3/5] COPY package.json .                                                                                              0.0s
+ => CACHED [frontend 4/5] RUN npm install                                                                                                  0.0s
+ => CACHED [frontend 5/5] COPY . .                                                                                                         0.0s
+ => [frontend] exporting to image                                                                                                          0.1s
+ => => exporting layers                                                                                                                    0.0s
+ => => writing image sha256:ad82ca1c78504bc845a9aa4d03fbed76d2abb0fa24fc4909efa9d711ddbb16ec                                               0.0s
+ => => naming to docker.io/library/mern-dockercompose-frontend                                                                             0.0s
+[+] Running 5/5
+ ✔ Network mern-dockercompose_mern_network  Created                                                                                        1.3s
+ ✔ Volume "mern-dockercompose_mongo-data"   Created                                                                                        0.3s
+ ✔ Container mern-dockercompose-mongodb-1   Started                                                                                        4.2s
+ ✔ Container mern-dockercompose-frontend-1  Started                                                                                        4.2s
+ ✔ Container mern-dockercompose-backend-1   Started                                                                                        0.9s
+kumar@LAPTOP-R0LFCE9D:~/Docker-Zero-to-Hero/examples/MERN-dockercompose$ docker ps
+CONTAINER ID   IMAGE                         COMMAND                  CREATED          STATUS          PORTS                      NAMES
+f8d2f85f0d20   mern-dockercompose-backend    "docker-entrypoint.s…"   18 seconds ago   Up 10 seconds   0.0.0.0:5050->5050/tcp     mern-dockercompose-backend-1
+40327fff6717   mern-dockercompose-frontend   "docker-entrypoint.s…"   22 seconds ago   Up 12 seconds   0.0.0.0:5173->5173/tcp     mern-dockercompose-frontend-1
+d2846b14d357   mongo:latest                  "docker-entrypoint.s…"   22 seconds ago   Up 12 seconds   0.0.0.0:27017->27017/tcp   mern-dockercompose-mongodb-1
+kumar@LAPTOP-R0LFCE9D:~/Docker-Zero-to-Hero/examples/MERN-dockercompose$ docker volume ls
+^[[ADRIVER    VOLUME NAME
+local     2afd3253c20c975854b1890075616d0909047af8e2f87f8a1fec4050c1f596a7
+local     28215d513a03d388f468da84138f63d8047142058abb7d817231a905aafe2dfe
+local     bc0d9393ce07963bcac200ad98c6114b8d1ef05a2d2287f298a2d55aa157bdbc
+local     bcc30ac8d625d435c9f8d04f9a21d92d084996a9bd9f17fa366ba2d29469be6c
+local     ce7eb51d783453fb085406b827c1157ae71989a348f668dba18a090c3443b223
+local     e9959b5adbb41feebc6f8540f55f682314d692abc358f85c78ee4fed39335710
+local     mern-dockercompose_mongo-data
+local     mongo-data
+local     mongodb
+kumar@LAPTOP-R0LFCE9D:~/Docker-Zero-to-Hero/examples/MERN-dockercompose$ docker network ls
+NETWORK ID     NAME                              DRIVER    SCOPE
+d3ada678d0c6   bridge                            bridge    local
+21b8e58a3fea   host                              host      local
+046e7e313323   mern-dockercompose_mern_network   bridge    local
+0d83f871ff0b   mern_network                      bridge    local
+11192a86a0d6   none                              null      local
+kumar@LAPTOP-R0LFCE9D:~/Docker-Zero-to-Hero/examples/MERN-dockercompose$ docker exec -it  mern-dockercompose-mongodb-1 mongosh
+Current Mongosh Log ID: 66d7ef184e2cc228185e739b
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.0
+Using MongoDB:          7.0.14
+Using Mongosh:          2.3.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+------
+   The server generated these startup warnings when booting
+   2024-09-04T05:09:52.088+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2024-09-04T05:09:55.855+00:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+   2024-09-04T05:09:55.862+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never' in this binary version
+   2024-09-04T05:09:55.862+00:00: vm.max_map_count is too low
+------
+
+test> show dbs;
+admin       40.00 KiB
+config     108.00 KiB
+employees   72.00 KiB
+local       40.00 KiB
+test> use employees
+switched to db employees
+employees> show collections
+records
+employees> db.records.find().pretty()
+[
+  {
+    _id: ObjectId('66d7ebecf83598d6967ea4b5'),
+    name: 'compose James',
+    position: 'systems engineer ',
+    level: 'Junior'
+  },
+  {
+    _id: ObjectId('66d7ecc1f83598d6967ea4b6'),
+    name: 'compose John',
+    position: 'principal consultant ',
+    level: 'Senior'
+  }
+]
+employees> exit
+
+=============================================================================================================================================================================
 then need to run mongodb container by giving env variables and by attaching  volume and network
 environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -33,13 +207,3 @@ Ensure that all necessary environment variables are set in your Docker Compose c
 Missing or incorrect environment variables, such as the backend URL in a frontend application, 
 can prevent proper connectivity between services and lead to errors or failed functionality. 
 Always define required environment variables to ensure your services communicate correctly and function as expected.
-
-
-
-
-
-
-
-
-
-
