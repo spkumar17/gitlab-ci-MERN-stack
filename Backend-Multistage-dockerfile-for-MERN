@@ -34,3 +34,4 @@ EXPOSE 5050
 # Specify the command to run the application when the container starts
 # In a distroless image, the default entrypoint is 'node', so we provide the script name to run
 CMD ["server.js"]
+
