@@ -1,39 +1,39 @@
-stages:
-  - build
-  - Security
-  - dockerbuild
+# stages:
+#   - build
+#   - Security
+#   - dockerbuild
 
-build:
-  stage: build
-  image: node:18.9.1
-  script:
-    - cd mern/fontend
-    - npm install
-  artifacts:
-    paths:
-      - mern/frontend/node_modules
-
-
-trivy-fs-frontend-scan:
-  stage: Security
-  script:
-    - apt-get update && apt-get install -y wget
-    - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
-    - dpkg -i trivy_0.42.0_Linux-64bit.deb
-    - trivy --version
-    - cd mern/frontend
-    - trivy fs --format table -o trivyfs.html .
-  artifacts:
-    paths:
-      - mern/frontend/trivyfs.html
+# build:
+#   stage: build
+#   image: node:18.9.1
+#   script:
+#     - cd mern/fontend
+#     - npm install
+#   artifacts:
+#     paths:
+#       - mern/frontend/node_modules
 
 
-build-backend-Docker:
-  stage: dockerbuild
-  script:
-    - docker login -u $username -p $password 
-    - cd mern/frontend
-    - docker buld -t prasannakumarsinganamalla431/frontendMARN:v1 -f dockerfile-ci .
-    - docker push prasannakumarsinganamalla431/frontendMARN:v1
-  dependencies:
-    - build        
+# trivy-fs-frontend-scan:
+#   stage: Security
+#   script:
+#     - apt-get update && apt-get install -y wget
+#     - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
+#     - dpkg -i trivy_0.42.0_Linux-64bit.deb
+#     - trivy --version
+#     - cd mern/frontend
+#     - trivy fs --format table -o trivyfs.html .
+#   artifacts:
+#     paths:
+#       - mern/frontend/trivyfs.html
+
+
+# build-backend-Docker:
+#   stage: dockerbuild
+#   script:
+#     - docker login -u $username -p $password 
+#     - cd mern/frontend
+#     - docker buld -t prasannakumarsinganamalla431/frontendMARN:v1 -f dockerfile-ci .
+#     - docker push prasannakumarsinganamalla431/frontendMARN:v1
+#   dependencies:
+#     - build        

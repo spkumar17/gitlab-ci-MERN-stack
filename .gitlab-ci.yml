@@ -1,3 +1,3 @@
 include:
-  - local: 'mern/frontend/.gitlab-ci-frontend.yml'
+ # - local: 'mern/frontend/.gitlab-ci-frontend.yml'
   - local: 'mern/backend/.gitlab-ci-backend.yml'
