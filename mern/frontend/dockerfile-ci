@@ -1,0 +1,16 @@
+FROM node:18.9.1
+
+WORKDIR /app
+
+
+RUN npm install
+
+EXPOSE 5173
+
+COPY . .
+
+COPY mern/frontend/node_modules /app/node_modules
+
+
+# Run the specified command within the container
+CMD ["npm", "run", "dev"]
