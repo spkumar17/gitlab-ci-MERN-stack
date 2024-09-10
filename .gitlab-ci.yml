@@ -1,6 +1,6 @@
 stages:
   -build
-  -Security
+#  -Security
 
 build:
   stage: build
@@ -12,9 +12,9 @@ build:
       - node_modules
 
 
-Security:
-  stage: Security
-  image: 
+# Security:
+#   stage: Security
+#   image: 
 
 
 
