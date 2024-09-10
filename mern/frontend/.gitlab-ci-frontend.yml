@@ -17,9 +17,9 @@
 # trivy-fs-frontend-scan:
 #   stage: Security
 #   script:
-#     - apt-get update && apt-get install -y wget
-#     - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
-#     - dpkg -i trivy_0.42.0_Linux-64bit.deb
+#     - sudo apt-get update && apt-get install -y wget
+#     - sudo wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
+#     - sudo dpkg -i trivy_0.42.0_Linux-64bit.deb
 #     - trivy --version
 #     - cd mern/frontend
 #     - trivy fs --format table -o trivyfs.html .
