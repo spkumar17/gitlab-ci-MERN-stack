@@ -25,7 +25,7 @@ trivy-fs-scan:
     - trivy fs --format table -o trivyfs.html .
   artifacts:
     paths:
-      - tmern/backend/rivyfs.html
+      - mern/backend/trivyfs.html
 
       
 # build-Docker:
