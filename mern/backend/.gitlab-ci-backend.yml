@@ -29,7 +29,7 @@ trivy-fs-backend-scan:
     paths:
       - mern/backend/trivyfs.html
   tags:
-    - slave1    
+    - slave2  
 
 
 build-backend-Docker:
