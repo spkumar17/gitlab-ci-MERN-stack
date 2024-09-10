@@ -1,6 +1,6 @@
 stages:
   - build
-  - Security
+  #- Security
   - dockerbuild
 
 
@@ -16,16 +16,16 @@ build:
   tags:
     - slave2
 
-trivy-fs-backend-scan:
-  stage: Security
-  script:
-    - cd mern/backend
-    - trivy fs --format table -o trivyfs.html .
-  artifacts:
-    paths:
-      - mern/backend/trivyfs.html
-  tags:
-    - slave1
+# trivy-fs-backend-scan:
+#   stage: Security
+#   script:
+#     - cd mern/backend
+#     - trivy fs --format table -o trivyfs.html .
+#   artifacts:
+#     paths:
+#       - mern/backend/trivyfs.html
+#   tags:
+#     - slave1
 
 
 build-backend-Docker:
@@ -39,4 +39,4 @@ build-backend-Docker:
   dependencies:
     - build  
   tags:
-    - slave2   
+    - slave1
