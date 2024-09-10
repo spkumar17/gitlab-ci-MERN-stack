@@ -16,29 +16,16 @@ build:
   tags:
     - slave2
 
-# trivy-fs-backend-scan:
-#   stage: Security
-#   # image: aquasec/trivy:latest
-#   script:
-#     - cd mern/backend
-#     - trivy fs --format table -o trivyfs.html .
-#   artifacts:
-#     paths:
-#       - mern/backend/trivyfs.html
-#   tags:
-#     - slave1
-
-trivy_scan:
+trivy-fs-backend-scan:
   stage: Security
-  image: aquasec/trivy:latest
   script:
     - cd mern/backend
     - trivy fs --format table -o trivyfs.html .
   artifacts:
     paths:
-      - trivyfs.html
+      - mern/backend/trivyfs.html
   tags:
-    - slave2
+    - slave1
 
 
 build-backend-Docker:
