@@ -1,0 +1,38 @@
+stages:
+  - build
+  - Security
+  - dockerbuild
+
+build:
+  stage: build
+  image: node:18.9.1
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules
+
+
+trivy-fs-backend-scan:
+  stage: Security
+  script:
+    - apt-get update && apt-get install -y wget
+    - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
+    - dpkg -i trivy_0.42.0_Linux-64bit.deb
+    - trivy --version
+    - trivy fs --format table -o trivyfs.html .
+  artifacts:
+    paths:
+      - trivyfs.html
+
+
+build-backend-Docker:
+  stage: dockerbuild
+  script:
+    - docker login -u $username -p $password 
+    - docker buld -t prasannakumarsinganamalla431/backendMARN:v1 -f dockerfile-ci .
+    - docker push prasannakumarsinganamalla431/backendMARN:v1
+  dependencies:
+    - build  
+
+ 
