@@ -33,9 +33,11 @@ build-backend-Docker:
   script:
 #    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
+    - mkdir -p mern/backend/node_modules
+    - cp -r mern/backend/node_modules /mnt/build_artifacts/node_modules
     - cd mern/backend
     - docker build -t prasannakumarsinganamalla431/backendmarn:v1 -f dockerfile-ci .
-    - docker push prasannakumarsinganamalla431/backendMARN:v1
+    - docker push prasannakumarsinganamalla431/backendmarn:v1
   dependencies:
     - build  
   tags:
