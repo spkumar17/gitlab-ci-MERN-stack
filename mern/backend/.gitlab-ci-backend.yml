@@ -17,7 +17,7 @@ build:
 
 trivy-fs-backend-scan:
   stage: Security
-  image: aquasec/trivy:latest
+  # image: aquasec/trivy:latest
   script:
     - apt-get update
     - apt-get install -y wget apt-transport-https gnupg lsb-release
@@ -31,7 +31,7 @@ trivy-fs-backend-scan:
     paths:
       - mern/backend/trivyfs.html
   tags:
-    - slave2  
+    - slave1
 
 
 build-backend-Docker:
