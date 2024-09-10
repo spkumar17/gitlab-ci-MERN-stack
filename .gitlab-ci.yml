@@ -22,7 +22,7 @@ trivy-fs-scan:
     - dpkg -i trivy_0.42.0_Linux-64bit.deb
     - trivy --version
     - cd mern/backend
-    - trivy fs --format table -o trivyfs.html
+    - trivy fs --format table -o trivyfs.html mern/backend.
   artifacts:
     paths:
       - trivyfs.html
