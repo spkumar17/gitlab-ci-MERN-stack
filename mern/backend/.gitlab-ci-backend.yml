@@ -39,4 +39,4 @@ build-backend-Docker:
   dependencies:
     - build  
   tags:
-    - slave1   
+    - slave2   
