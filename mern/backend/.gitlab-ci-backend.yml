@@ -13,7 +13,7 @@ build:
     paths:
       - mern/backend/node_modules
   tags:
-    - slave1
+    - slave2
 
 trivy-fs-backend-scan:
   stage: Security
