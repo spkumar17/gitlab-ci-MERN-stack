@@ -1,7 +1,7 @@
 stages:
   - build
   - Security
-  # - dockerbuild
+  - dockerbuild
 
 build:
   stage: build
@@ -28,12 +28,12 @@ trivy-fs-scan:
       - mern/backend/trivyfs.html
 
       
-# build-Docker:
-#   stage: dockerbuild
-#   script:
-#     - docker login -u $username -p $password 
-#     - cd mern/backend
-#     - docker buld -t prasannakumarsinganamalla431 -f 
-#   dependencies:
-#     - build  
+build-Docker:
+  stage: dockerbuild
+  script:
+    - docker login -u $username -p $password 
+    - cd mern/backend
+    - docker buld -t prasannakumarsinganamalla431 -f dockerfile-ci .
+  dependencies:
+    - build  
  
