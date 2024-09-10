@@ -7,10 +7,11 @@ build:
   stage: build
   image: node:18.9.1
   script:
+    - cd mern/backend
     - npm install
   artifacts:
     paths:
-      - node_modules
+      - mern/backend/node_modules
 
 
 trivy-fs-backend-scan:
@@ -20,16 +21,18 @@ trivy-fs-backend-scan:
     - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
     - dpkg -i trivy_0.42.0_Linux-64bit.deb
     - trivy --version
+    - cd mern/backend
     - trivy fs --format table -o trivyfs.html .
   artifacts:
     paths:
-      - trivyfs.html
+      - mern/backend/trivyfs.html
 
 
 build-backend-Docker:
   stage: dockerbuild
   script:
     - docker login -u $username -p $password 
+    - cd mern/backend
     - docker buld -t prasannakumarsinganamalla431/backendMARN:v1 -f dockerfile-ci .
     - docker push prasannakumarsinganamalla431/backendMARN:v1
   dependencies:
