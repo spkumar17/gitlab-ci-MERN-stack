@@ -1,6 +1,6 @@
 stages:
-  -build
-#  -Security
+  - build
+#  - Security
 
 build:
   stage: build
@@ -14,7 +14,4 @@ build:
 
 # Security:
 #   stage: Security
-#   image: 
-
-
-
+#   image:
