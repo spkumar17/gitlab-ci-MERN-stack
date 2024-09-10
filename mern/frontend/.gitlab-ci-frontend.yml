@@ -1,0 +1,13 @@
+stages:
+  - build
+  - Security
+  - dockerbuild
+
+build:
+  stage: build
+  image: node:18.9.1
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules
