@@ -34,7 +34,7 @@ trivy-fs-backend-scan:
 build-backend-Docker:
   stage: dockerbuild
   script:
-    - sudo apt install docker.io && usermod -aG docker $user
+#    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
     - cd mern/backend
     - docker buld -t prasannakumarsinganamalla431/backendMARN:v1 -f dockerfile-ci .
