@@ -1,6 +1,7 @@
 stages:
   - build
-#  - Security
+  - Security
+  # - dockerbuild
 
 build:
   stage: build
@@ -10,9 +11,25 @@ build:
     - npm install
   artifacts:
     paths:
-      - node_modules
+      - mern/backend/node_modules
 
 
-# Security:
-#   stage: Security
-#   image:
+trivy-fs-scan:
+  stage: Security
+  script:
+    - cd mern/backend
+    - trivy fs --format table -o trivyfs.html
+  artifacts:
+    paths:
+      - trivyfs.html
+
+      
+# build-Docker:
+#   stage: dockerbuild
+#   script:
+#     - docker login -u $username -p $password 
+#     - cd mern/backend
+#     - docker buld -t prasannakumarsinganamalla431 -f 
+#   dependencies:
+#     - build  
+ 
