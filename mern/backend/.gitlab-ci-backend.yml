@@ -12,7 +12,8 @@ build:
   artifacts:
     paths:
       - mern/backend/node_modules
-
+  tags:
+    - slave1
 
 trivy-fs-backend-scan:
   stage: Security
@@ -26,16 +27,19 @@ trivy-fs-backend-scan:
   artifacts:
     paths:
       - mern/backend/trivyfs.html
+  tags:
+    - slave1    
 
 
 build-backend-Docker:
   stage: dockerbuild
   script:
+    - sudo apt install docker.io && usermod -aG docker $user
     - docker login -u $username -p $password 
     - cd mern/backend
     - docker buld -t prasannakumarsinganamalla431/backendMARN:v1 -f dockerfile-ci .
     - docker push prasannakumarsinganamalla431/backendMARN:v1
   dependencies:
     - build  
-
- 
+  tags:
+    - slave1   
