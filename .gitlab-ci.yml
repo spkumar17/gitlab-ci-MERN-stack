@@ -6,6 +6,7 @@ build:
   stage: build
   image: node:18.9.1
   script:
+    - cd mern/backend
     - npm install
   artifacts:
     paths:
