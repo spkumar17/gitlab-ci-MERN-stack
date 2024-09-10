@@ -17,6 +17,10 @@ build:
 trivy-fs-scan:
   stage: Security
   script:
+    - apt-get update && apt-get install -y wget
+    - wget https://github.com/aquasecurity/trivy/releases/download/v0.42.0/trivy_0.42.0_Linux-64bit.deb
+    - dpkg -i trivy_0.42.0_Linux-64bit.deb
+    - trivy --version
     - cd mern/backend
     - trivy fs --format table -o trivyfs.html
   artifacts:
