@@ -2,9 +2,10 @@ FROM gcr.io/distroless/nodejs18-debian12
 
 WORKDIR /app
 
-COPY . .
+COPY . app/
+
 
 
 EXPOSE 5050
 
-CMD ["npm", "start"]
+CMD ["server.js"]
