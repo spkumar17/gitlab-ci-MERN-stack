@@ -57,6 +57,6 @@ build-backend-Docker:
     - docker build -t prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID -f dockerfile-ci .
     - docker push prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
   dependencies:
-    - build  
+    - backend-build  
   tags:
     - slave1
