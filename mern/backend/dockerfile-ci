@@ -2,8 +2,7 @@ FROM gcr.io/distroless/nodejs18-debian12
 
 WORKDIR /app
 
-COPY mern/backend/ app/
-
+COPY . /app/
 
 EXPOSE 5050
 
