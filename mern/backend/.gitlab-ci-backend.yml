@@ -12,7 +12,7 @@ build:
     - npm install
   artifacts:
     paths:
-      - mern/backend/node_modules
+      - cp/node_modules
   tags:
     - slave2
 
@@ -33,9 +33,8 @@ build-backend-Docker:
   script:
 #    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
-    - mkdir -p mern/backend/node_modules
-    - cp -r mern/backend/node_modules mern/backend/node_modules
     - cd mern/backend
+    - cp -r cp/ mern/backend
     - docker build -t prasannakumarsinganamalla431/backendmarn:v1 -f dockerfile-ci .
     - docker push prasannakumarsinganamalla431/backendmarn:v1
   dependencies:
