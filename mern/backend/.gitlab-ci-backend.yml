@@ -28,7 +28,7 @@ trivy-fs-backend-scan:
     - slave1
 
 sonarqube-check:
-  stage: security
+  stage: Security
   image: 
     name: sonarsource/sonar-scanner-cli:latest
   variables:
