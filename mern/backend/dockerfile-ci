@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-# Copy the node_modules directory into the container
-COPY mern/backend/node_modules /app/node_modules
 
 EXPOSE 5050
 
