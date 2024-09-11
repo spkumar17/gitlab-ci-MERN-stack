@@ -35,8 +35,8 @@ build-backend-Docker:
     - docker login -u $username -p $password 
     - cd mern/backend
     - ls 
-    - docker build -t prasannakumarsinganamalla431/backendmarn:v1 -f dockerfile-ci .
-    - docker push prasannakumarsinganamalla431/backendmarn:v1
+    - docker build -t prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID -f dockerfile-ci .
+    - docker push prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
   dependencies:
     - build  
   tags:

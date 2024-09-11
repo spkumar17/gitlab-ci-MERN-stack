@@ -1,9 +1,14 @@
+# Use a distroless Node.js base image
 FROM gcr.io/distroless/nodejs18-debian12
 
+# Set working directory inside the container
 WORKDIR /app
 
-COPY . app/
+# Copy the necessary files from the current directory into the container
+COPY . /app/
 
+# Expose the port your application will run on
 EXPOSE 5050
 
+# Start the application by running server.js
 CMD ["server.js"]
