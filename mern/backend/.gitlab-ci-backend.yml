@@ -29,7 +29,7 @@ trivy-fs-backend-scan:
     paths:
       - mern/backend/trivyfs.html
   tags:
-    - slave1
+    - slave3
 
 sonarqube-check:
   stage: Security
@@ -67,7 +67,7 @@ build-backend-Docker:
     paths:
       - mern/backend/backendmarn_$CI_PIPELINE_ID.tar
   tags:
-    - slave1
+    - slave3
 
 
 
@@ -85,7 +85,7 @@ trivy-backend-imagescan:
   dependencies:
     - build-backend-Docker
   tags:
-    - slave1  
+    - slave3
 
 docker-backend-push:
   stage: dockerpush
@@ -98,4 +98,4 @@ docker-backend-push:
   dependencies:
     - build-backend-Docker
   tags:
-    - slave1
+    - slave3

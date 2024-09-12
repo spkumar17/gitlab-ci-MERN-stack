@@ -29,7 +29,7 @@ trivy-fs-frontend-scan:
     paths:
       - mern/frontend/fronttrivyfs.html
   tags:
-    - slave1
+    - slave3
 
 sonarqube-check:
   stage: Security
@@ -77,7 +77,7 @@ trivy-frontend-imagescan:
   dependencies:
     - build-frontend-Docker
   tags:
-    - slave1
+    - slave3
 
 docker-frontend-push:
   stage: dockerpush
