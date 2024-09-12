@@ -62,7 +62,7 @@ build-frontend-Docker:
     paths:
       - mern/frontend/frontendmarn_$CI_PIPELINE_ID.tar
   tags:
-    - slave1
+    - slave3
 
 trivy-frontend-imagescan:
   stage: dockerimagescan
@@ -77,7 +77,7 @@ trivy-frontend-imagescan:
   dependencies:
     - build-frontend-Docker
   tags:
-    - slave1  
+    - slave3
 
 docker-frontend-push:
   stage: dockerpush
@@ -90,4 +90,4 @@ docker-frontend-push:
   dependencies:
     - build-frontend-Docker
   tags:
-    - slave1
+    - slave3

@@ -54,7 +54,7 @@ sonarqube-check:
 build-backend-Docker:
   stage: dockerbuild
   script:
-#    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
+#    - sudo apt install docker.io -y && sudo usermod -aG docker $USER
     - docker login -u $username -p $password 
     - cd mern/backend
     - ls 
