@@ -1,8 +1,11 @@
 stages:
   - build
   - Security
-  - dockerbuild
-
+  - dockerbuild&push
+  - dockerimagescan
+  
+services: 
+  - docker:dind
 
 backend-build:
   stage: build
@@ -48,7 +51,7 @@ sonarqube-check:
 
 
 build-backend-Docker:
-  stage: dockerbuild
+  stage: dockerbuild&push
   script:
 #    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
@@ -60,3 +63,12 @@ build-backend-Docker:
     - backend-build  
   tags:
     - slave1
+
+trivy-backend-imagescan:
+  stage: dockerimagescan
+  image:
+    name: "aquasec/trivy:$TRIVY_VERSION"
+  script:
+    - docker pull prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
+    #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
+    - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
