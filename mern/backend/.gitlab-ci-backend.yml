@@ -3,7 +3,7 @@ stages:
   - Security
   - dockerbuild&push
   - dockerimagescan
-  
+
 services: 
   - docker:dind
 
@@ -67,7 +67,7 @@ build-backend-Docker:
 trivy-backend-imagescan:
   stage: dockerimagescan
   image:
-    name: "aquasec/trivy:$TRIVY_VERSION"
+    name: "aquasec/trivy:latest"
   script:
     - docker pull prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
     #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
