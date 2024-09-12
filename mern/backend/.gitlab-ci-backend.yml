@@ -64,8 +64,8 @@ build-backend-Docker:
   dependencies:
     - backend-build  
   artifacts:
-    path:
-      - mern/backend
+    paths:
+      - mern/backend/backendmarn_$CI_PIPELINE_ID.tar
   tags:
     - slave1
 
