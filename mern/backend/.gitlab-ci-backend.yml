@@ -66,11 +66,9 @@ build-backend-Docker:
 
 trivy-backend-imagescan:
   stage: dockerimagescan
-  image:
-    name: "aquasec/trivy:latest"
   script:
     - docker pull prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
     #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
     - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
   tags:
-    - slave2  
+    - slave1  
