@@ -77,7 +77,7 @@ trivy-frontend-imagescan:
   dependencies:
     - build-frontend-Docker
   tags:
-    - slave3
+    - slave1
 
 docker-frontend-push:
   stage: dockerpush
