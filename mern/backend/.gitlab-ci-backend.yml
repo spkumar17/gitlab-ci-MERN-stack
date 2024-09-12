@@ -73,4 +73,4 @@ trivy-backend-imagescan:
     #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
     - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
   tags:
-    - slave1  
+    - slave2  
