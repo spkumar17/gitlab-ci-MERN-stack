@@ -1,8 +1,12 @@
 stages:
   - build
   - Security
-  - dockerbuild&push
+  - dockerbuild
   - dockerimagescan
+  - dockerpush 
+
+services: 
+  - docker:dind
 
 frontend-build:
   stage: build
@@ -16,14 +20,14 @@ frontend-build:
   tags:
     - slave2
 
-trivy-fs-frotend-scan:
+trivy-fs-frontend-scan:
   stage: Security
   script:
     - cd mern/frontend
-    - trivy fs --format table -o trivyfs.html .
+    - trivy fs --format table -o fronttrivyfs.html .
   artifacts:
     paths:
-      - mern/frontend/trivyfs.html
+      - mern/frontend/fronttrivyfs.html
   tags:
     - slave1
 
@@ -44,28 +48,46 @@ sonarqube-check:
   tags:
     - slave2
 
-
-
-
 build-frontend-Docker:
-  stage: dockerbuild&push
+  stage: dockerbuild
   script:
-#    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
     - cd mern/frontend
     - ls 
     - docker build -t prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID -f dockerfile-ci .
-    - docker push prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+    - docker save -o frontendmarn_$CI_PIPELINE_ID.tar prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
   dependencies:
     - frontend-build  
+  artifacts:
+    paths:
+      - mern/frontend/frontendmarn_$CI_PIPELINE_ID.tar
   tags:
     - slave1
 
-trivy-backend-imagescan:
+trivy-frontend-imagescan:
   stage: dockerimagescan
   script:
-    - docker pull prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
-    #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
-    - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+    - cd mern/frontend
+    - ls
+    - docker load -i frontendmarn_$CI_PIPELINE_ID.tar
+    - trivy image --scanners vuln --format table --output frontend-trivy-image-scan.txt prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+  artifacts:
+    paths:
+      - mern/frontend/frontend-trivy-image-scan.txt
+  dependencies:
+    - build-frontend-Docker
   tags:
-    - slave1      
+    - slave1  
+
+docker-frontend-push:
+  stage: dockerpush
+  script:
+    - docker login -u $username -p $password
+    - cd mern/frontend
+    - ls 
+    - docker load -i frontendmarn_$CI_PIPELINE_ID.tar
+    - docker push prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+  dependencies:
+    - build-frontend-Docker
+  tags:
+    - slave1
