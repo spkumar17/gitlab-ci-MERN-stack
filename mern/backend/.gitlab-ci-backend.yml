@@ -74,6 +74,8 @@ build-backend-Docker:
 trivy-backend-imagescan:
   stage: dockerimagescan
   script:
+    - cd mern/backend
+    - ls
     #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
     - docker load -i frontendmarn_$CI_PIPELINE_ID.tar
     - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
