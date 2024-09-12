@@ -1,8 +1,9 @@
 stages:
   - build
   - Security
-  - dockerbuild&push
+  - dockerbuild
   - dockerimagescan
+  - dockerpush 
 
 services: 
   - docker:dind
@@ -51,24 +52,46 @@ sonarqube-check:
 
 
 build-backend-Docker:
-  stage: dockerbuild&push
+  stage: dockerbuild
   script:
 #    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
     - docker login -u $username -p $password 
     - cd mern/backend
     - ls 
     - docker build -t prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID -f dockerfile-ci .
-    - docker push prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
+    - docker save -o backendmarn_$CI_PIPELINE_ID.tar prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
+    # - docker push prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
   dependencies:
     - backend-build  
+  artifacts:
+    path:
+      - mern/backend/backendmarn_$CI_PIPELINE_ID.tar
   tags:
     - slave1
+
+
 
 trivy-backend-imagescan:
   stage: dockerimagescan
   script:
-    - docker pull prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
     #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
+    - docker load -i frontendmarn_$CI_PIPELINE_ID.tar
     - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/backendmarn:$CI_PIPELINE_ID
+  
+  dependencies:
+    - build-backend-Docker
   tags:
     - slave1  
+
+docker-backend-push:
+  stage: dockerpush
+  script:
+    - docker login -u $username -p $password
+    - cd mern/backend
+    - ls 
+    - docker load -i frontendmarn_$CI_PIPELINE_ID.tar
+    - docker push prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+  dependencies:
+    - build-backend-Docker
+  tags:
+    - slave1

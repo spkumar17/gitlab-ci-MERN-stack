@@ -2,7 +2,7 @@ stages:
   - build
   - Security
   - dockerbuild&push
-
+  - dockerimagescan
 
 frontend-build:
   stage: build
@@ -47,7 +47,7 @@ sonarqube-check:
 
 
 
-build-backend-Docker:
+build-frontend-Docker:
   stage: dockerbuild&push
   script:
 #    - sudo apt install docker.io -y && sudo usermod -aG docker ubuntu
@@ -60,3 +60,12 @@ build-backend-Docker:
     - frontend-build  
   tags:
     - slave1
+
+trivy-backend-imagescan:
+  stage: dockerimagescan
+  script:
+    - docker pull prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+    #- trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_TAG
+    - trivy image --scanners vuln --format table --output trivy-image-scan.txt prasannakumarsinganamalla431/frontendmarn:$CI_PIPELINE_ID
+  tags:
+    - slave1      
