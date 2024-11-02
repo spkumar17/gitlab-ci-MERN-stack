@@ -1,16 +1,16 @@
-# Stage 1: Build Stage
-FROM node:18.9.1 AS build
-WORKDIR /app
-COPY package*.json .
-RUN npm install
-COPY . .
+# # Stage 1: Build Stage
+# FROM node:18.9.1 AS build
+# WORKDIR /app
+# COPY package*.json .
+# RUN npm install
+# COPY . .
 
-# Stage 2: Production Stage
-FROM node:18-alpine
-WORKDIR /app
-COPY --from=build /app /app
-EXPOSE 5173
-CMD ["npm", "run", "dev"]
+# # Stage 2: Production Stage
+# FROM node:18-alpine
+# WORKDIR /app
+# COPY --from=build /app /app
+# EXPOSE 5173
+# CMD ["npm", "run", "dev"]
 
 #-------------------------------------------
 # with best practices

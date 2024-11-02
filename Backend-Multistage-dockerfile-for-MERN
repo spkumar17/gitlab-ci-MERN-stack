@@ -1,18 +1,18 @@
-# Build Stage
-FROM node:18.9.1 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
+# # Build Stage
+# FROM node:18.9.1 AS build
+# WORKDIR /app
+# COPY package*.json ./
+# RUN npm install
+# COPY . .
 
-# Runtime Stage
-FROM gcr.io/distroless/nodejs18-debian12
-WORKDIR /app
-COPY --from=build /app /app
-EXPOSE 5050
+# # Runtime Stage
+# FROM gcr.io/distroless/nodejs18-debian12
+# WORKDIR /app
+# COPY --from=build /app /app
+# EXPOSE 5050
 
-# In a distroless image, the default entrypoint is 'node', so we provide the script name to run
-CMD ["server.js"]
+# # In a distroless image, the default entrypoint is 'node', so we provide the script name to run
+# CMD ["server.js"]
 
 #-------------------------------
 #with best security practice's
