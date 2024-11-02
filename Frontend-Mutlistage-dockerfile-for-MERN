@@ -29,6 +29,7 @@ RUN addgroup -S frontend && adduser -S frontend -G frontend
 WORKDIR /app
 COPY --from=build /app /app
 RUN chown -R frontend:frontend /app
+RUN chmod 755 /app
 USER frontend
 EXPOSE 5173
 CMD ["npm", "run", "dev"]

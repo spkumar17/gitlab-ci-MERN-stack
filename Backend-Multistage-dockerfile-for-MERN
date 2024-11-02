@@ -30,6 +30,7 @@ WORKDIR /app
 RUN addgroup -S backend && adduser -S backend -G backend
 COPY --from=build /app /app
 RUN chown -R backend:backend /app
+RUN chmod 755 /app
 USER backend
 EXPOSE 5050
 # In a distroless image, the default entrypoint is 'node', so we provide the script name to run
